@@ -214,6 +214,25 @@
   }
   .project-links a{ margin-right: 18px; }
 
+  .diagram{
+    margin: 14px 0 14px 0;
+    max-width: 640px;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 12px;
+  }
+  .diagram img{
+    display:block;
+    width:100%;
+    height:auto;
+  }
+  .diagram figcaption{
+    margin-top: 8px;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+  }
+
   .highlight-tag{
     display:inline-block;
     font-size: 0.68rem;
@@ -334,6 +353,10 @@
           <div class="metric"><span class="num">0</span><span class="label">sticky sessions</span></div>
         </div>
         <p class="project-desc" style="margin-bottom:0;">Cross-instance WebSocket fanout runs through Redis pub/sub, which is what lets stateless ECS Fargate tasks sit behind an ALB with no session affinity. Ships with a JavaFX desktop client alongside the React PWA.</p>
+        <figure class="diagram">
+          <img src="assets/diagrams/onyxchat-architecture.svg" alt="OnyxChat architecture: browser client through a load balancer into an AWS VPC, where stateless Fargate tasks use Redis pub/sub for fanout and write to PostgreSQL.">
+          <figcaption>Client connects through the load balancer with no session affinity — Redis pub/sub fans each message out to every Fargate task, so it doesn't matter which one a client lands on.</figcaption>
+        </figure>
         <div class="stack">
           <span>Go</span><span>React/TypeScript</span><span>PostgreSQL</span><span>Redis</span><span>ECS Fargate</span><span>Terraform</span><span>Web Crypto API</span>
         </div>
@@ -365,6 +388,10 @@
           <div class="metric"><span class="num">1,800/sec</span><span class="label">throughput, 1,000 concurrent</span></div>
           <div class="metric"><span class="num">0</span><span class="label">dropped or duplicated jobs</span></div>
         </div>
+        <figure class="diagram">
+          <img src="assets/diagrams/batchq-skip-locked-flow.svg" alt="BatchQ SKIP LOCKED flow: Worker A claims Row 1, Worker B's query skips the locked row instead of blocking and claims Row 2.">
+          <figcaption>Worker B's query would normally block on Row 1's lock — SKIP LOCKED lets it skip past and claim Row 2 instead, so neither worker waits and neither double-processes a job.</figcaption>
+        </figure>
         <div class="stack">
           <span>Go</span><span>PostgreSQL</span><span>Docker</span><span>race detector CI</span>
         </div>
